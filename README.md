@@ -49,7 +49,6 @@ Tabulky pojmenujte:
 Dále připravte sadu SQL, které z vámi připravených tabulek získají datový podklad k odpovězení na vytyčené výzkumné otázky. Pozor, otázky/hypotézy mohou vaše výstupy podporovat i vyvracet! Záleží na tom, co říkají data.
 
 Na svém GitHub účtu vytvořte repozitář (může být soukromý), kam uložíte všechny informace k projektu – hlavně SQL skript generující výslednou tabulku, popis mezivýsledků (průvodní listinu) a informace o výstupních datech (například kde chybí hodnoty apod.).
-
 ## 2. Analýza jednotlivých tabulek
 Tato kapitola slouží k popisu a základní analýze jednotlivých tabulek dostupných v engeto databázi. Tyto tabulky následně slouží k vytvoření finální primární a sekundární tabulky.
 Samotný popis a analýza jednotlivých tabulek bude prováděna pomocí průzkumu vlastností tabulek, ER diagramu a samotných dat. Průzkum dat bude proveden jak pomocí jednuchého pohledu na datovou tabulka, tak i pomocí základních SQL přikazů.
@@ -67,6 +66,36 @@ Tato tabulka obsahuje osm sloupců, a to:
 - **industry_branch_code** - kodové označení jednotlivých oblastí průmyslu České republiky (cizí klíč). Popsáné v kapitole [2.1.3 Czechia\_payroll\_industry\_branch](#213-czechia_payroll_industry_branch)
 - **payroll_year** - roky, ke kterým jsou dané hodnoty přiřazeny
 - **payroll_quarter** - čtvrteltí pro jednotlivé roky
+1. Sloupce industry_branch_code a value obsahují prázdné hodnoty. Ostatní sloupce nikoliv (hodnota NULL)
+ ```
+SELECT 
+	calculation_code 
+FROM czechia_payroll 
+WHERE calculation_code IS NULL;
+```
+>Následně analogicky pro všechny sloupce
+2. V případě, že se vezme v potaz to, že se bude anayzovat průměrná hrubá mzda přepočetená na celý úvazek pro jednotlivé oblasti průmyslu, tak lze ostatní hodnoty eliminovat v následných analýzách pomocí příslušných kodu viz podpkapitoly níže. I při této eliminaci růstalo asi 86 záznamů s prázdnou hodnotou u industry_branch_code. Sloupec value po zavedení omezovacích podmínek už prázdné hodnoty neobsahuje.
+```
+ SELECT 
+	value,
+	unit_code,
+	industry_branch_code,
+	calculation_code,
+	value_type_code
+FROM czechia_payroll 
+WHERE 
+	unit_code = 200 AND 
+	value_type_code = 5958 AND
+	calculation_code = 200 AND
+	(value IS NULL OR industry_branch_code IS NULL)
+ORDER BY value;
+```
+3. Sledované období je v od roku 2000 do roku 2021
+ ```
+SELECT DISTINCT
+	payroll_year
+FROM czechia_payroll;
+```
 #### 2.1.2 Czechia_payroll_calculation
 Tato tabulka obsahuje kodobé označení a popis jednotlivých hodnot, na které jsou jednotlivé záznamy překalkulovány.
 
@@ -86,7 +115,7 @@ Tato tabulka obsahuje kodobé označení a popis jednotlivých jednotek, na kter
 Data jsou zaznamenána do dvou sloupců, a to:
 - **code** - dva kody označují dvě hodnoty , které byly v tabulce mezd zaznamenávány (primární klíč)
 - **name** - názvy dvou zaznamenávaných hodnot
-> V tomto projektu nás bude zajímat kodové označení **200 **vyjadřující hodnotu české měny ("Kč")
+> V tomto projektu nás bude zajímat kodové označení **200** vyjadřující hodnotu české měny ("Kč")
 #### 2.1.5 Czechia_payroll_value_type
 Tato tabulka obsahuje kodobé označení a popis jednotlivých druhů hodnot vstupujících do tabulky mezd.
 
@@ -107,20 +136,13 @@ V této tabulce je celkem 6 sloupců
 1. Sloupce id, value, category_code, date_from a date_to nemají prázdné záznamy . Sloupec region_code obsahuje prázdné záznamy (hodnota NULL)
 ```
 SELECT 
-	value,
-	category_code,
-	date_from,
-	date_to,
-	region_code
+ value
 FROM czechia_price 
 WHERE 
 	value IS NULL
-	OR category_code IS NULL 
-	OR date_from IS NULL
-	OR date_to IS NULL
-	OR region_code IS NULL;
 ```
-1. V případě prázdných záznamů u sloupce regio_code se vždy jedná o průměrnou hodnoty(cenu) dané kategorie potravin za všechny kraje v daném sledovaném období
+>Následně analogicky pro všechny sloupce
+2. V případě prázdných záznamů u sloupce regio_code se vždy jedná o průměrnou hodnoty(cenu) dané kategorie potravin za všechny kraje v daném sledovaném období
 ```
 SELECT 
 	category_code,
