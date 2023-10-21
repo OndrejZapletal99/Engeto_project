@@ -10,11 +10,6 @@
 - [Engeto projekt](#engeto-projekt)
 - [Obsah](#obsah)
   - [1. Zadání projektu](#1-zadání-projektu)
-    - [1.1 Primární tabulky](#11-primární-tabulky)
-    - [1.2 Číselníky sdílených informací o ČR](#12-číselníky-sdílených-informací-o-čr)
-    - [1.3 Dodatečné tabulky](#13-dodatečné-tabulky)
-    - [1.4 Výzkumné otázky](#14-výzkumné-otázky)
-    - [1.5 Výstup projektu](#15-výstup-projektu)
   - [2. Analýza jednotlivých tabulek](#2-analýza-jednotlivých-tabulek)
     - [2.1 Primární tabulky](#21-primární-tabulky)
       - [2.1.1 Czechia\_payroll](#211-czechia_payroll)
@@ -39,13 +34,6 @@
 
 
 
-
-
-
-
-
-
-
 ## 1. Zadání projektu
 
 Na vašem analytickém oddělení nezávislé společnosti, která se zabývá životní úrovní občanů, jste se dohodli, že se pokusíte odpovědět na pár definovaných výzkumných otázek, které adresují dostupnost základních potravin široké veřejnosti. Kolegové již vydefinovali základní otázky, na které se pokusí odpovědět a poskytnout tuto informaci tiskovému oddělení. Toto oddělení bude výsledky prezentovat na následující konferenci zaměřené na tuto oblast.
@@ -53,29 +41,6 @@ Na vašem analytickém oddělení nezávislé společnosti, která se zabývá �
 Potřebují k tomu od vás připravit robustní datové podklady, ve kterých bude možné vidět porovnání dostupnosti potravin na základě průměrných příjmů za určité časové období.
 
 Jako dodatečný materiál připravte i tabulku s HDP, GINI koeficientem a populací dalších evropských států ve stejném období, jako primární přehled pro ČR.
-
-### 1.1 Primární tabulky
-1. **czechia_payroll** – Informace o mzdách v různých odvětvích za několikaleté období. Datová sada pochází z Portálu otevřených dat ČR.
-2. **czechia_payroll_calculation** – Číselník kalkulací v tabulce mezd.
-3. **czechia_payroll_industry_branch** – Číselník odvětví v tabulce mezd.
-4.** czechia_payroll_unit** – Číselník jednotek hodnot v tabulce mezd.
-5. **czechia_payroll_value_type** – Číselník typů hodnot v tabulce mezd.
-6. **czechia_price** – Informace o cenách vybraných potravin za několikaleté období. Datová sada pochází z Portálu otevřených dat ČR.
-7. **czechia_price_category** – Číselník kategorií potravin, které se vyskytují v našem přehledu.
-### 1.2 Číselníky sdílených informací o ČR
-1. **czechia_region** – Číselník krajů České republiky dle normy CZ-NUTS 2.
-2. **czechia_district** – Číselník okresů České republiky dle normy LAU.
-### 1.3 Dodatečné tabulky
-1.** countries** - Všemožné informace o zemích na světě, například hlavní město, měna, národní jídlo nebo průměrná výška populace.
-2. **economies** - HDP, GINI, daňová zátěž, atd. pro daný stát a rok.
-### 1.4 Výzkumné otázky
-1. Rostou v průběhu let mzdy ve všech odvětvích, nebo v některých klesají?
-2. Kolik je možné si koupit litrů mléka a kilogramů chleba za první a poslední srovnatelné období v dostupných datech cen a mezd?
-3. Která kategorie potravin zdražuje nejpomaleji (je u ní nejnižší percentuální meziroční nárůst)?
-4. Existuje rok, ve kterém byl meziroční nárůst cen potravin výrazně vyšší než růst mezd (větší než 10 %)?
-5. Má výška HDP vliv na změny ve mzdách a cenách potravin? Neboli, pokud HDP vzroste výrazněji v jednom roce, projeví se to na cenách potravin či mzdách ve stejném nebo násdujícím roce výraznějším růstem?
-### 1.5 Výstup projektu
-Pomozte kolegům s daným úkolem. Výstupem by měly být dvě tabulky v databázi, ze kterých se požadovaná data dají získat. 
 
 Tabulky pojmenujte:
 - ***t_{jmeno}_{prijmeni}_project_SQL_primary_final*** (pro data mezd a cen potravin za Českou republiku sjednocených na totožné porovnatelné období – společné roky) 
@@ -86,17 +51,50 @@ Dále připravte sadu SQL, které z vámi připravených tabulek získají datov
 Na svém GitHub účtu vytvořte repozitář (může být soukromý), kam uložíte všechny informace k projektu – hlavně SQL skript generující výslednou tabulku, popis mezivýsledků (průvodní listinu) a informace o výstupních datech (například kde chybí hodnoty apod.).
 
 ## 2. Analýza jednotlivých tabulek
+Tato kapitola slouží k popisu a základní analýze jednotlivých tabulek dostupných v engeto databázi. Tyto tabulky následně slouží k vytvoření finální primární a sekundární tabulky.
+Samotný popis a analýza jednotlivých tabulek bude prováděna pomocí průzkumu vlastností tabulek, ER diagramu a samotných dat. Průzkum dat bude proveden jak pomocí jednuchého pohledu na datovou tabulka, tak i pomocí základních SQL přikazů.
 ### 2.1 Primární tabulky
+Primární tabulky jsou zdrojem dat pro finální primární tabulku tohoto projektu.
 #### 2.1.1 Czechia_payroll
 #### 2.1.2 Czechia_payroll_calculation
+Tato tabulka obsahuje kodobé označení a popis jednotlivých hodnot, na které jsou jednotlivé záznamy překalkulovány
+Data jsou zaznamenána do dvou sloupců, a to:
+- **code** - dva kody označují dvě hodnoty , které byly v tabulce mezd použity na překalkulování
+- **name** - názvy dvou zaznamenávaných hodnot
+> V tomto projektu nás bude zajímat kodové označení **200**. Tento kod přepočítává hodnoty na plné úvazky. Je obecně známo, že ne každý pracuje na plný úvazek a tudíž to může následně zkreslovat hodnoty průměrných mezd. Věšina lidí je v České republice zatím zaměstnána na plný úvazek.
 #### 2.1.3 Czechia_payroll_industry_branch
+Tato tabulka obsahuje data s názvy jednotlivých oblastí průmyslu České republiky a jejich kodového označení. Tato data jsou uspořádáná do dvou sloupců, a to:
+- **code** -  kody jednotlivých oblastů průmyslu (primární klíč)
+- **name** -  názvy oblastí průmyslu
 #### 2.1.4 Czechia_payroll_unit
+Tato tabulka obsahuje kodobé označení a popis jednotlivých jednotek, na které jsou vztaženy zaznamenaní hodnoty
+Data jsou zaznamenána do dvou sloupců, a to:
+- **code** - dva kody označují dvě hodnoty , které byly v tabulce mezd zaznamenávány (primární klíč)
+- **name** - názvy dvou zaznamenávaných hodnot
+> V tomto projektu nás bude zajímat kodové označení **200 **vyjadřující hodnotu české měny ("Kč")
 #### 2.1.5 Czechia_payroll_value_type
+Tato tabulka obsahuje kodobé označení a popis jednotlivých druhů hodnot vstupujících do tabulky mezd.
+Data jsou zaznamenána do dvou sloupců, a to:
+- **code** - dva kody označují dvě hodnoty , které byly v tabulce mezd zaznamenávány (primární klíč)
+- **name** - názvy dvou zaznamenávaných hodnot
+> V tomto projektu nás bude zajímat kodové označení **5958** vyjadřující průměrnou hrubou mzdu na jednoho zaměstnance
 #### 2.1.6 Czechia_price
 #### 2.1.7 Czechia_price_category
+Tato tabulka obsahuje data o jednotlivých druzích potravin, jejich jednotce a hodtnoě jednotky v jaké jsou zaznamenány, a také kod pro jednotlivé poraviny.
+Tato tabulka obsahuje čtyři sloupce, a to:
+- **code** - kody jednotlivých druhů potravin (primární klíč)
+- **name** - názvy jedntnolivých druhů potravin
+- **price_value** - hodnota jednotky pro daný druh potraviny, na kterou je vztažena cena potraviny
+- **price_unit** - jednotka pro daný druh potraviny, na kterou je vztažena cena poraviny
 ### 2.2 Číselníky sdílených informací o ČR
 #### 2.2.1 Czechia_region
+Tato tabulka obsahuje data s názvy jednotlivých krajů České republiky a jejich kodového označení. Tato data jsou uspořádáná do dvou sloupců, a to:
+- **code** -  kody jednotlivých krajů (primární klíč)
+- **name** -  názvy jednotlivých krajů
 #### 2.2.2 Czechia_district
+Tato tabulka obsahuje data s názvy jednotlivých okresů České republiky a jejich kodového označení. Tato data jsou uspořádáná do dvou sloupců, a to:
+- **code** - kody jednotlivých okrsů (primární klíč)
+- **name** - názvy jednotlivých okresů
 ### 2.3 Dodatečné tabulky
 #### 2.3.1 Countries
 #### 2.3.2 Economies
