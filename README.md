@@ -10,6 +10,7 @@
 - [Engeto projekt](#engeto-projekt)
 - [Obsah](#obsah)
   - [1. Zadání projektu](#1-zadání-projektu)
+    - [1.1 Výzkumné otázky](#11-výzkumné-otázky)
   - [2. Analýza jednotlivých tabulek](#2-analýza-jednotlivých-tabulek)
     - [2.1 Primární tabulky](#21-primární-tabulky)
       - [2.1.1 Czechia\_payroll](#211-czechia_payroll)
@@ -28,6 +29,7 @@
   - [3. Tvorba primární finální a primární sekundární tabulky](#3-tvorba-primární-finální-a-primární-sekundární-tabulky)
     - [3.1 Primární finální tabulka](#31-primární-finální-tabulka)
     - [3.2 Sekundární finální tabulka](#32-sekundární-finální-tabulka)
+  - [4. Výzkumné otázky](#4-výzkumné-otázky)
 
 
 
@@ -49,6 +51,12 @@ Tabulky pojmenujte:
 Dále připravte sadu SQL, které z vámi připravených tabulek získají datový podklad k odpovězení na vytyčené výzkumné otázky. Pozor, otázky/hypotézy mohou vaše výstupy podporovat i vyvracet! Záleží na tom, co říkají data.
 
 Na svém GitHub účtu vytvořte repozitář (může být soukromý), kam uložíte všechny informace k projektu – hlavně SQL skript generující výslednou tabulku, popis mezivýsledků (průvodní listinu) a informace o výstupních datech (například kde chybí hodnoty apod.).
+### 1.1 Výzkumné otázky 
+1. Rostou v průběhu let mzdy ve všech odvětvích, nebo v některých klesají?
+2. Kolik je možné si koupit litrů mléka a kilogramů chleba za první a poslední srovnatelné období v dostupných datech cen a mezd?
+3. Která kategorie potravin zdražuje nejpomaleji (je u ní nejnižší percentuální meziroční nárůst)?
+4. Existuje rok, ve kterém byl meziroční nárůst cen potravin výrazně vyšší než růst mezd (větší než 10 %)?
+5. Má výška HDP vliv na změny ve mzdách a cenách potravin? Neboli, pokud HDP vzroste výrazněji v jednom roce, projeví se to na cenách potravin či mzdách ve stejném nebo násdujícím roce výraznějším růstem?
 ## 2. Analýza jednotlivých tabulek
 Tato kapitola slouží k popisu a základní analýze jednotlivých tabulek dostupných v engeto databázi. Tyto tabulky následně slouží k vytvoření finální primární a sekundární tabulky.
 Samotný popis a analýza jednotlivých tabulek bude prováděna pomocí průzkumu vlastností tabulek, ER diagramu a samotných dat. Průzkum dat bude proveden jak pomocí jednuchého pohledu na datovou tabulka, tak i pomocí základních SQL přikazů.
@@ -172,6 +180,13 @@ GROUP BY region_code;
 ```
 
 >Pokud v následojících datových analýzách nebude potřeba rozdělení na kraje tak je lepší využíta region_code s prázdnými hodnotami. Pokud bude potřeba výsledné hodnoty o cenách atd rozdělit podle krajů je lepší prázné hodnoty v region_code vyloučit
+4. Sledované období je v od roku 2006 do roku 2018.
+```
+SELECT DISTINCT
+ YEAR(date_from) AS `year`
+FROM czechia_price
+ORDER BY YEAR(date_from);
+```
 #### 2.1.7 Czechia_price_category
 Tato tabulka obsahuje data o jednotlivých druzích potravin, jejich jednotce a hodnotě jednotky v jaké jsou zaznamenány, a také kod pro jednotlivé potraviny.
 
@@ -199,3 +214,4 @@ Tato data jsou uspořádáná do dvou sloupců, a to:
 ## 3. Tvorba primární finální a primární sekundární tabulky
 ### 3.1 Primární finální tabulka
 ### 3.2 Sekundární finální tabulka
+## 4. Výzkumné otázky
