@@ -56,31 +56,103 @@ Samotný popis a analýza jednotlivých tabulek bude prováděna pomocí průzku
 ### 2.1 Primární tabulky
 Primární tabulky jsou zdrojem dat pro finální primární tabulku tohoto projektu.
 #### 2.1.1 Czechia_payroll
+Tato tabulka obsahuje data týkajících o mzdách a počtu zaměstnaných v různých odvětvích průmyslu České republiky za různá sledovaná období.
+
+Tato tabulka obsahuje osm sloupců, a to:
+- **id** - id záznamu (primární klíč)
+- **value** - hodnoty mezd nebo počtu osob
+- **value_type_code** - kodové označení typu zaznamenané hodnoty (cizí klíč). Popsáno v podkapitole [2.1.5 Czechia\_payroll\_value\_type](#215-czechia_payroll_value_type)
+- **unit_code** - kodové označení vyjadřované jednotky (cizí klíč). Popsanáno v podkapitole [2.1.4 Czechia\_payroll\_unit](#214-czechia_payroll_unit)
+- **calculation_code** - kodové označení typu přepočtu pro jednotlivé záznamy(cizí klíč). Popsáno v podkapitole [2.1.2 Czechia\_payroll\_calculation](#212-czechia_payroll_calculation)
+- **industry_branch_code** - kodové označení jednotlivých oblastí průmyslu České republiky (cizí klíč). Popsáné v kapitole [2.1.3 Czechia\_payroll\_industry\_branch](#213-czechia_payroll_industry_branch)
+- **payroll_year** - roky, ke kterým jsou dané hodnoty přiřazeny
+- **payroll_quarter** - čtvrteltí pro jednotlivé roky
 #### 2.1.2 Czechia_payroll_calculation
-Tato tabulka obsahuje kodobé označení a popis jednotlivých hodnot, na které jsou jednotlivé záznamy překalkulovány
+Tato tabulka obsahuje kodobé označení a popis jednotlivých hodnot, na které jsou jednotlivé záznamy překalkulovány.
+
 Data jsou zaznamenána do dvou sloupců, a to:
 - **code** - dva kody označují dvě hodnoty , které byly v tabulce mezd použity na překalkulování
 - **name** - názvy dvou zaznamenávaných hodnot
 > V tomto projektu nás bude zajímat kodové označení **200**. Tento kod přepočítává hodnoty na plné úvazky. Je obecně známo, že ne každý pracuje na plný úvazek a tudíž to může následně zkreslovat hodnoty průměrných mezd. Věšina lidí je v České republice zatím zaměstnána na plný úvazek.
 #### 2.1.3 Czechia_payroll_industry_branch
-Tato tabulka obsahuje data s názvy jednotlivých oblastí průmyslu České republiky a jejich kodového označení. Tato data jsou uspořádáná do dvou sloupců, a to:
+Tato tabulka obsahuje data s názvy jednotlivých oblastí průmyslu České republiky a jejich kodového označení. 
+
+Tato data jsou uspořádáná do dvou sloupců, a to:
 - **code** -  kody jednotlivých oblastů průmyslu (primární klíč)
 - **name** -  názvy oblastí průmyslu
 #### 2.1.4 Czechia_payroll_unit
-Tato tabulka obsahuje kodobé označení a popis jednotlivých jednotek, na které jsou vztaženy zaznamenaní hodnoty
+Tato tabulka obsahuje kodobé označení a popis jednotlivých jednotek, na které jsou vztaženy zaznamenané hodnoty.
+
 Data jsou zaznamenána do dvou sloupců, a to:
 - **code** - dva kody označují dvě hodnoty , které byly v tabulce mezd zaznamenávány (primární klíč)
 - **name** - názvy dvou zaznamenávaných hodnot
 > V tomto projektu nás bude zajímat kodové označení **200 **vyjadřující hodnotu české měny ("Kč")
 #### 2.1.5 Czechia_payroll_value_type
 Tato tabulka obsahuje kodobé označení a popis jednotlivých druhů hodnot vstupujících do tabulky mezd.
+
 Data jsou zaznamenána do dvou sloupců, a to:
 - **code** - dva kody označují dvě hodnoty , které byly v tabulce mezd zaznamenávány (primární klíč)
 - **name** - názvy dvou zaznamenávaných hodnot
 > V tomto projektu nás bude zajímat kodové označení **5958** vyjadřující průměrnou hrubou mzdu na jednoho zaměstnance
 #### 2.1.6 Czechia_price
+Tato tabulka obsahuje data ohledně cen jednotlivých druhů potravin ve sledovaných obdobích podle sledovaných krajů.
+
+V této tabulce je celkem 6 sloupců
+- **id** - id záznamu měření (primární klíč)
+- **value** - hodnot (cena) jednotlivých záznamů
+- **category_code** - číselný kod pro jednotlivé kategorie potravin (cizí klíč)
+- **date_from** - počáteční datum měření
+- **date_to** - konečné datum měření 
+- **region_code** - kod jednotlivých regionů
+1. Sloupce id, value, category_code, date_from a date_to nemají prázdné záznamy . Sloupec region_code obsahuje prázdné záznamy (hodnota NULL)
+```
+SELECT 
+	value,
+	category_code,
+	date_from,
+	date_to,
+	region_code
+FROM czechia_price 
+WHERE 
+	value IS NULL
+	OR category_code IS NULL 
+	OR date_from IS NULL
+	OR date_to IS NULL
+	OR region_code IS NULL;
+```
+1. V případě prázdných záznamů u sloupce regio_code se vždy jedná o průměrnou hodnoty(cenu) dané kategorie potravin za všechny kraje v daném sledovaném období
+```
+SELECT 
+	category_code,
+	AVG (value) AS average
+FROM czechia_price 
+WHERE category_code = 112201
+	AND date_from = '2017-11-13'
+	AND date_to = '2017-11-19'
+	AND region_code IS NOT NULL;
+
+SELECT 
+	category_code,
+	value 
+FROM czechia_price 
+WHERE category_code = 112201
+	AND date_from = '2017-11-13'
+	AND date_to = '2017-11-19'
+	AND region_code IS NULL;
+```
+3. Počet záznamů pro chybějící hodnoty v region_code se téměř rovná počtu záznamů pro jakýkoliv kraj zvlášť (až na odchylku u pár krajů o 1-3 záznamy)
+```
+SELECT 
+	COUNT(category_code) AS num_values,
+	region_code
+FROM czechia_price 
+GROUP BY region_code;
+```
+
+>Pokud v následojících datových analýzách nebude potřeba rozdělení na kraje tak je lepší využíta region_code s prázdnými hodnotami. Pokud bude potřeba výsledné hodnoty o cenách atd rozdělit podle krajů je lepší prázné hodnoty v region_code vyloučit
 #### 2.1.7 Czechia_price_category
-Tato tabulka obsahuje data o jednotlivých druzích potravin, jejich jednotce a hodtnoě jednotky v jaké jsou zaznamenány, a také kod pro jednotlivé poraviny.
+Tato tabulka obsahuje data o jednotlivých druzích potravin, jejich jednotce a hodnotě jednotky v jaké jsou zaznamenány, a také kod pro jednotlivé potraviny.
+
 Tato tabulka obsahuje čtyři sloupce, a to:
 - **code** - kody jednotlivých druhů potravin (primární klíč)
 - **name** - názvy jedntnolivých druhů potravin
@@ -88,11 +160,15 @@ Tato tabulka obsahuje čtyři sloupce, a to:
 - **price_unit** - jednotka pro daný druh potraviny, na kterou je vztažena cena poraviny
 ### 2.2 Číselníky sdílených informací o ČR
 #### 2.2.1 Czechia_region
-Tato tabulka obsahuje data s názvy jednotlivých krajů České republiky a jejich kodového označení. Tato data jsou uspořádáná do dvou sloupců, a to:
+Tato tabulka obsahuje data s názvy jednotlivých krajů České republiky a jejich kodového označení. 
+
+Tato data jsou uspořádáná do dvou sloupců, a to:
 - **code** -  kody jednotlivých krajů (primární klíč)
 - **name** -  názvy jednotlivých krajů
 #### 2.2.2 Czechia_district
-Tato tabulka obsahuje data s názvy jednotlivých okresů České republiky a jejich kodového označení. Tato data jsou uspořádáná do dvou sloupců, a to:
+Tato tabulka obsahuje data s názvy jednotlivých okresů České republiky a jejich kodového označení. 
+
+Tato data jsou uspořádáná do dvou sloupců, a to:
 - **code** - kody jednotlivých okrsů (primární klíč)
 - **name** - názvy jednotlivých okresů
 ### 2.3 Dodatečné tabulky
