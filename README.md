@@ -55,7 +55,7 @@ Samotný popis a analýza jednotlivých tabulek bude prováděna pomocí průzku
 ### 2.1 Primární tabulky
 Primární tabulky jsou zdrojem dat pro finální primární tabulku tohoto projektu.
 #### 2.1.1 Czechia_payroll
-Tato tabulka obsahuje data týkajících o mzdách a počtu zaměstnaných v různých odvětvích průmyslu České republiky za různá sledovaná období.
+Tato tabulka obsahuje data týkající se mezd a počtu zaměstnaných v různých odvětvích průmyslu České republiky za vybraná období.
 
 Tato tabulka obsahuje osm sloupců, a to:
 - **id** - id záznamu (primární klíč)
@@ -66,7 +66,7 @@ Tato tabulka obsahuje osm sloupců, a to:
 - **industry_branch_code** - kodové označení jednotlivých oblastí průmyslu České republiky (cizí klíč). Popsáné v kapitole [2.1.3 Czechia\_payroll\_industry\_branch](#213-czechia_payroll_industry_branch)
 - **payroll_year** - roky, ke kterým jsou dané hodnoty přiřazeny
 - **payroll_quarter** - čtvrteltí pro jednotlivé roky
-1. Sloupce industry_branch_code a value obsahují prázdné hodnoty. Ostatní sloupce nikoliv (hodnota NULL)
+1. Sloupce industry_branch_code a value obsahují prázdné hodnoty. Ostatní sloupce nikoliv (hodnota NULL).
  ```
 SELECT 
 	calculation_code 
@@ -74,7 +74,7 @@ FROM czechia_payroll
 WHERE calculation_code IS NULL;
 ```
 >Následně analogicky pro všechny sloupce
-2. V případě, že se vezme v potaz to, že se bude anayzovat průměrná hrubá mzda přepočetená na celý úvazek pro jednotlivé oblasti průmyslu, tak lze ostatní hodnoty eliminovat v následných analýzách pomocí příslušných kodu viz podpkapitoly níže. I při této eliminaci růstalo asi 86 záznamů s prázdnou hodnotou u industry_branch_code. Sloupec value po zavedení omezovacích podmínek už prázdné hodnoty neobsahuje.
+2. V případě, že se vezme v potaz to, že se bude anayzovat průměrná hrubá mzda přepočetená na celý úvazek pro jednotlivé oblasti průmyslu, tak lze ostatní hodnoty eliminovat v následných analýzách pomocí příslušných kodů viz podpkapitoly níže. I při této eliminaci zůstalo asi 86 záznamů s prázdnou hodnotou u industry_branch_code. Sloupec value po zavedení omezovacích podmínek už prázdné hodnoty neobsahuje.
 ```
  SELECT 
 	value,
@@ -90,7 +90,7 @@ WHERE
 	(value IS NULL OR industry_branch_code IS NULL)
 ORDER BY value;
 ```
-3. Sledované období je v od roku 2000 do roku 2021
+3. Sledované období je v od roku 2000 do roku 2021.
  ```
 SELECT DISTINCT
 	payroll_year
@@ -133,7 +133,7 @@ V této tabulce je celkem 6 sloupců
 - **date_from** - počáteční datum měření
 - **date_to** - konečné datum měření 
 - **region_code** - kod jednotlivých regionů
-1. Sloupce id, value, category_code, date_from a date_to nemají prázdné záznamy . Sloupec region_code obsahuje prázdné záznamy (hodnota NULL)
+1. Sloupce id, value, category_code, date_from a date_to nemají prázdné záznamy. Sloupec region_code obsahuje prázdné záznamy (hodnota NULL).
 ```
 SELECT 
  value
@@ -142,7 +142,7 @@ WHERE
 	value IS NULL
 ```
 >Následně analogicky pro všechny sloupce
-2. V případě prázdných záznamů u sloupce regio_code se vždy jedná o průměrnou hodnoty(cenu) dané kategorie potravin za všechny kraje v daném sledovaném období
+2. V případě prázdných záznamů u sloupce regio_code se vždy jedná o průměrnou hodnoty(cenu) dané kategorie potravin za všechny kraje v daném sledovaném období.
 ```
 SELECT 
 	category_code,
@@ -179,7 +179,7 @@ Tato tabulka obsahuje čtyři sloupce, a to:
 - **code** - kody jednotlivých druhů potravin (primární klíč)
 - **name** - názvy jedntnolivých druhů potravin
 - **price_value** - hodnota jednotky pro daný druh potraviny, na kterou je vztažena cena potraviny
-- **price_unit** - jednotka pro daný druh potraviny, na kterou je vztažena cena poraviny
+- **price_unit** - jednotka pro daný druh potraviny, na kterou je vztažena cena potraviny
 ### 2.2 Číselníky sdílených informací o ČR
 #### 2.2.1 Czechia_region
 Tato tabulka obsahuje data s názvy jednotlivých krajů České republiky a jejich kodového označení. 
