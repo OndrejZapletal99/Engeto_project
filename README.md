@@ -9,27 +9,28 @@
   
 - [Engeto projekt](#engeto-projekt)
 - [Obsah](#obsah)
-  - [1. Zadání projektu](#1-zadání-projektu)
-    - [1.1 Výzkumné otázky](#11-výzkumné-otázky)
-  - [2. Analýza jednotlivých tabulek](#2-analýza-jednotlivých-tabulek)
-    - [2.1 Primární tabulky](#21-primární-tabulky)
-      - [2.1.1 Czechia\_payroll](#211-czechia_payroll)
-      - [2.1.2 Czechia\_payroll\_calculation](#212-czechia_payroll_calculation)
-      - [2.1.3 Czechia\_payroll\_industry\_branch](#213-czechia_payroll_industry_branch)
-      - [2.1.4 Czechia\_payroll\_unit](#214-czechia_payroll_unit)
-      - [2.1.5 Czechia\_payroll\_value\_type](#215-czechia_payroll_value_type)
-      - [2.1.6 Czechia\_price](#216-czechia_price)
-      - [2.1.7 Czechia\_price\_category](#217-czechia_price_category)
-    - [2.2 Číselníky sdílených informací o ČR](#22-číselníky-sdílených-informací-o-čr)
-      - [2.2.1 Czechia\_region](#221-czechia_region)
-      - [2.2.2 Czechia\_district](#222-czechia_district)
-    - [2.3 Dodatečné tabulky](#23-dodatečné-tabulky)
-      - [2.3.1 Countries](#231-countries)
-      - [2.3.2 Economies](#232-economies)
-  - [3. Tvorba primární finální a primární sekundární tabulky](#3-tvorba-primární-finální-a-primární-sekundární-tabulky)
-    - [3.1 Primární finální tabulka](#31-primární-finální-tabulka)
-    - [3.2 Sekundární finální tabulka](#32-sekundární-finální-tabulka)
-  - [4. Výzkumné otázky](#4-výzkumné-otázky)
+	- [1. Zadání projektu](#1-zadání-projektu)
+		- [1.1 Výzkumné otázky](#11-výzkumné-otázky)
+	- [2. Analýza jednotlivých tabulek](#2-analýza-jednotlivých-tabulek)
+		- [2.1 Primární tabulky](#21-primární-tabulky)
+			- [2.1.1 Czechia\_payroll](#211-czechia_payroll)
+			- [2.1.2 Czechia\_payroll\_calculation](#212-czechia_payroll_calculation)
+			- [2.1.3 Czechia\_payroll\_industry\_branch](#213-czechia_payroll_industry_branch)
+			- [2.1.4 Czechia\_payroll\_unit](#214-czechia_payroll_unit)
+			- [2.1.5 Czechia\_payroll\_value\_type](#215-czechia_payroll_value_type)
+			- [2.1.6 Czechia\_price](#216-czechia_price)
+			- [2.1.7 Czechia\_price\_category](#217-czechia_price_category)
+		- [2.2 Číselníky sdílených informací o ČR](#22-číselníky-sdílených-informací-o-čr)
+			- [2.2.1 Czechia\_region](#221-czechia_region)
+			- [2.2.2 Czechia\_district](#222-czechia_district)
+		- [2.3 Dodatečné tabulky](#23-dodatečné-tabulky)
+			- [2.3.1 Countries](#231-countries)
+			- [2.3.2 Economies](#232-economies)
+		- [2.4 Závěry a výspupy pro projekt](#24-závěry-a-výspupy-pro-projekt)
+	- [3. Tvorba primární finální a primární sekundární tabulky](#3-tvorba-primární-finální-a-primární-sekundární-tabulky)
+		- [3.1 Primární finální tabulka](#31-primární-finální-tabulka)
+		- [3.2 Sekundární finální tabulka](#32-sekundární-finální-tabulka)
+	- [4. Výzkumné otázky](#4-výzkumné-otázky)
 
 
 
@@ -56,7 +57,7 @@ Na svém GitHub účtu vytvořte repozitář (může být soukromý), kam ulož�
 2. Kolik je možné si koupit litrů mléka a kilogramů chleba za první a poslední srovnatelné období v dostupných datech cen a mezd?
 3. Která kategorie potravin zdražuje nejpomaleji (je u ní nejnižší percentuální meziroční nárůst)?
 4. Existuje rok, ve kterém byl meziroční nárůst cen potravin výrazně vyšší než růst mezd (větší než 10 %)?
-5. Má výška HDP vliv na změny ve mzdách a cenách potravin? Neboli, pokud HDP vzroste výrazněji v jednom roce, projeví se to na cenách potravin či mzdách ve stejném nebo násdujícím roce výraznějším růstem?
+5. Má výška HDP vliv na změny ve mzdách a cenách potravin? Neboli, pokud HDP vzroste výrazněji v jednom roce, projeví se to na cenách potravin či mzdách ve stejném nebo následujícím roce výraznějším růstem?
 ## 2. Analýza jednotlivých tabulek
 Tato kapitola slouží k popisu a základní analýze jednotlivých tabulek dostupných v engeto databázi. Tyto tabulky následně slouží k vytvoření finální primární a sekundární tabulky.
 Samotný popis a analýza jednotlivých tabulek bude prováděna pomocí průzkumu vlastností tabulek, ER diagramu a samotných dat. Průzkum dat bude proveden jak pomocí jednuchého pohledu na datovou tabulka, tak i pomocí základních SQL přikazů.
@@ -196,6 +197,8 @@ Tato tabulka obsahuje čtyři sloupce, a to:
 - **price_value** - hodnota jednotky pro daný druh potraviny, na kterou je vztažena cena potraviny
 - **price_unit** - jednotka pro daný druh potraviny, na kterou je vztažena cena potraviny
 ### 2.2 Číselníky sdílených informací o ČR
+
+Číselníkové tabulky jsou doplňkovým zdrojem informací pro finální primární tabulku.
 #### 2.2.1 Czechia_region
 Tato tabulka obsahuje data s názvy jednotlivých krajů České republiky a jejich kodového označení. 
 
@@ -209,8 +212,46 @@ Tato data jsou uspořádáná do dvou sloupců, a to:
 - **code** - kody jednotlivých okrsů (primární klíč)
 - **name** - názvy jednotlivých okresů
 ### 2.3 Dodatečné tabulky
+Dodatečné tabulky jsou zdrojem dat pro sekundární finální tabulku projektu.
 #### 2.3.1 Countries
+Tato tabulka obsahuje demografická a geografická data jednotlivých států. Tato data mohou být následně použita pro zjišťování ruzných ekonomických jevů v závislosti na např. typu vlády atd.
+
+Data pochází z více zdrojů a mohou být nekompletní nebo nekonzistentní.
+
+V případě našeho projektu nás z této tabulky budou zajímat data ohledně názvu země, populace, rozloze země. Tyto údaje jsou zazamenány ve třech sloupcích, a to:
+- **country** - název země
+- **population** - populace v dané zemi
+- **surface_area** - rozloha dané země
+>U těchto dat je velká nevýhoda, že není známa jejich aktuálnost a také tyto hodnoty mění každý rok. Pro základní analýzu však postačí.
 #### 2.3.2 Economies
+Tato tabulka obsahuje data ohledně zákadních ekonomických ukazatelů daných státu v ruzných letech.
+
+Je tvořena osmi sloupci, a to:
+- **country** - název státu nebo oblasti
+- **year** - rok měření 
+- **GDP** - hrubý domácí produkt v daném roce
+- **populace** - populace v daném roce
+- **gini** - GINI koeficient v daném roce
+- **taxes** - daně v daném roce
+- **fertelity** - plodost v daném roce
+- **mortality_under5** - úmrtnost v daném roce
+
+>Pro tento projekt budou podstatné sloupce s názvem státu, GDP ukazatelem a rokem měření.
+
+1. Sloupce country a year neobsahují prázdné hodnoty. Sloupec s ukazatelem GDP obsahuje nulové hodnoty
+```
+SELECT 
+	`year` 
+FROM economies 
+WHERE `year`  IS NULL;
+```
+2. Ekonomiické ukazatele byly zaznamenávány v období od roku 1960 do roku 2020.
+```
+SELECT DISTINCT 
+	`year` 
+FROM economies;
+```
+###  2.4 Závěry a výspupy pro projekt
 ## 3. Tvorba primární finální a primární sekundární tabulky
 ### 3.1 Primární finální tabulka
 ### 3.2 Sekundární finální tabulka
