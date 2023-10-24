@@ -1,7 +1,8 @@
 # Engeto projekt
 
 - *Závěrečný projekt Engeto datové analýzy*
-- *SQL, Excel, PowerBi*
+- *SQL*
+- *DISCORD*: "ondrej_zapletal"
 ---
 
 
@@ -227,8 +228,8 @@ V případě našeho projektu nás z této tabulky budou zajímat data ohledně 
 Tato tabulka obsahuje data ohledně zákadních ekonomických ukazatelů daných státu v ruzných letech.
 
 Je tvořena osmi sloupci, a to:
-- **country** - název státu nebo oblasti
-- **year** - rok měření 
+- **country** - název státu nebo oblasti (primární klíč v kabinaci s 'year')
+- **year** - rok měření (primární klíč v kabinaci s 'country')
 - **GDP** - hrubý domácí produkt v daném roce
 - **populace** - populace v daném roce
 - **gini** - GINI koeficient v daném roce
