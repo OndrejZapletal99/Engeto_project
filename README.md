@@ -28,6 +28,8 @@
 			- [2.3.1 Countries](#231-countries)
 			- [2.3.2 Economies](#232-economies)
 		- [2.4 Závěry a výspupy pro projekt](#24-závěry-a-výspupy-pro-projekt)
+			- [2.4.1 Primární tabulky](#241-primární-tabulky)
+			- [2.4.2 Sekundární tabulky](#242-sekundární-tabulky)
 	- [3. Tvorba primární finální a primární sekundární tabulky](#3-tvorba-primární-finální-a-primární-sekundární-tabulky)
 		- [3.1 Primární finální tabulka](#31-primární-finální-tabulka)
 		- [3.2 Sekundární finální tabulka](#32-sekundární-finální-tabulka)
@@ -253,6 +255,15 @@ SELECT DISTINCT
 FROM economies;
 ```
 ###  2.4 Závěry a výspupy pro projekt
+#### 2.4.1 Primární tabulky
+1. Pro czechia_payroll_calculation  bude použito omezení/filtr pouze na hodnotu "**200**" ze sloupce code aby hodnoty vyjadřovavané hodnoty byly přepočtené na celé úvazky.
+2. Pro czechia_payroll_unit  bude použito omezení/filtr pouze na hodnotu "**200**" ze sloupce code aby hodnoty byly vyjádřeny v Kč.
+3. Pro czechia_payroll_value_type  bude použito omezení/filtr pouze na hodnotu "**5958**" ze sloupce code aby hodnoty vyjadřovaly průměrnou hrubou mzdu zaměstnance.
+4. Sloupec 'payroll_year' z tabulky czechia_payroll a sloupec 'date_from' z tabulky czechia_price bude spojovacím sloupcem pro spojení těchto dvou tabulek.
+5. Ze sloupce region_code z tabulky czechia_price budou odebrány takové záznamy, které obsahují prázdné hodnoty.
+ #### 2.4.2 Sekundární tabulky
+ 1. V projektu budou spíše využita data z tabulky economies, které budou doplněny o data z tabulky country v nové vzniklé finální sekundární tabulce.
+ 2. Spojovacím sloupcem bude 'country' v obou tabulkách
 ## 3. Tvorba primární finální a primární sekundární tabulky
 ### 3.1 Primární finální tabulka
 ### 3.2 Sekundární finální tabulka
