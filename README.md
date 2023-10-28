@@ -354,7 +354,7 @@ WHERE previous_payroll IS NOT NULL
 	AND payroll_change = 'decrease'
 ORDER BY `year`; 
 ```
->Dle tabulky/dat získaných díky výše uvedenému scriptu lze říci, že existovala odvětví průmyslu České republiky, které zaznamelana meziroční pokles průměrných mezd. Převážně se jednalo o poklesy obodobí ekonomických krizí od roku 200á do roku 2O12/13.
+>Dle tabulky/dat získaných díky výše uvedenému scriptu lze říci, že existovala odvětví průmyslu České republiky, které zaznamelana meziroční pokles průměrných mezd. Převážně se jednalo o poklesy obodobí ekonomických krizí od roku 2006 do roku 2O12/13.
 Výsledná data dostupná v CSV formátu v souboru [q1_export_data](https://github.com/OndrejZapletal99/Engeto_project/blob/main/q1_export_data.csv).
 ### 4.2 Kolik je možné si koupit litrů mléka a kilogramů chleba za první a poslední srovnatelné období v dostupných datech cen a mezd?
 
