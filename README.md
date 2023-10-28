@@ -34,7 +34,7 @@
     	- [4.2 Kolik je možné si koupit litrů mléka a kilogramů chleba za první a poslední srovnatelné období v dostupných datech cen a mezd?)?](#42-kolik-je-možné-si-koupit-litrů-mléka-a-kilogramů-chleba-za-první-a-poslední-srovnatelné-období-v-dostupných-datech-cen-a-mezd)
 		- [4.3 Která kategorie potravin zdražuje nejpomaleji (je u ní nejnižší percentuální meziroční nárůst)?](#43-která-kategorie-potravin-zdražuje-nejpomaleji-je-u-ní-nejnižší-percentuální-meziroční-nárůst)
 		- [4.4 Existuje rok, ve kterém byl meziroční nárůst cen potravin výrazně vyšší než růst mezd (větší než 10 %)?](#44-existuje-rok-ve-kterém-byl-meziroční-nárůst-cen-potravin-výrazně-vyšší-než-růst-mezd-větší-než-10)
-		- [Má výška HDP vliv na změny ve mzdách a cenách potravin? Neboli, pokud HDP vzroste výrazněji v jednom roce, projeví se to na cenách potravin či mzdách ve stejném nebo následujícím roce výraznějším růstem?](#45-má-výška-hdp-vliv-na-změny-ve-mzdách-a-cenách-potravin-neboli-pokud-hdp-vzroste-výrazněji-v-jednom-roce-projeví-se-to-na-cenách-potravin-či-mzdách-ve-stejném-nebo-následujícím-roce-výraznějším-růstem)
+		- [4.5 Má výška HDP vliv na změny ve mzdách a cenách potravin? Neboli, pokud HDP vzroste výrazněji v jednom roce, projeví se to na cenách potravin či mzdách ve stejném nebo následujícím roce výraznějším růstem?](#45-má-výška-hdp-vliv-na-změny-ve-mzdách-a-cenách-potravin-neboli-pokud-hdp-vzroste-výrazněji-v-jednom-roce-projeví-se-to-na-cenách-potravin-či-mzdách-ve-stejném-nebo-následujícím-roce-výraznějším-růstem)
   
 
 
