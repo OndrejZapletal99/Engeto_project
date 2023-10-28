@@ -32,7 +32,6 @@
 			- [2.4.2 Sekundární tabulky](#242-sekundární-tabulky)
 	- [3. Tvorba primární finální a primární sekundární tabulky](#3-tvorba-primární-finální-a-primární-sekundární-tabulky)
 		- [3.1 Primární finální tabulka](#31-primární-finální-tabulka)
-		- [3.2 Sekundární finální tabulka](#32-sekundární-finální-tabulka)
 	- [4. Výzkumné otázky](#4-výzkumné-otázky)
 
 
@@ -269,16 +268,16 @@ FROM economies;
  2. Spojovacím sloupcem bude 'country' v obou tabulkách
 ## 3. Tvorba primární finální a primární sekundární tabulky
 ### 3.1 Primární finální tabulka
-	Konečná finální primární tabulka obsahuje sloupce:
-	- **price_value** - průměrná cena dané kategorie potravin za všechny kraje
-	- **food_name_code** - kod kategorie potravin
-	- **food_name** - název kategorie potravin
-	- **food_unit_value** - hodnota, ne kterou je vztažena jednotka dané potraviny
-	- **food_unit** - jednotka dané potraviny
-	- **payroll_value** - průěmrná hrubá mzda v Kč vztažená na celý úvazek
-	- **industry_code** - kod kategorie průmyslu České republiky
-	- **industry_name** - název kategorie průmyslu České republiky
-	- **rok** - časové období měření
+Finální primární tabulka obsahuje sloupce:
+- **price_value** - průměrná cena dané kategorie potravin za všechny kraje
+- **food_name_code** - kod kategorie potravin
+- **food_name** - název kategorie potravin
+- **food_unit_value** - hodnota, ne kterou je vztažena jednotka dané potraviny
+- **food_unit** - jednotka dané potraviny
+- **payroll_value** - průěmrná hrubá mzda v Kč vztažená na celý úvazek
+- **industry_code** - kod kategorie průmyslu České republiky
+- **industry_name** - název kategorie průmyslu České republiky
+- **rok** - časové období měření
   ```
   CREATE TABLE t_ondrej_zapletal_project_SQL_primary_final AS
 	SELECT 
@@ -303,10 +302,30 @@ FROM economies;
 		ON cp2.industry_branch_code = cpib.code 
 	JOIN czechia_price_category cpc
 		ON cp.category_code = cpc.code;
-	
-SELECT DISTINCT
-	*
-FROM t_ondrej_zapletal_project_sql_primary_final tozpspf; 
+	```
+### 3.2 Sekundární finální 
+Finální primární tabulka obsahuje sloupce:
+- **county** - název dané země
+- **year** - rok 
+- **GDP** - hrubý domácí produkt
+- **population** - populace
+- **surface_area** - rozloha
+
+Data byla omezena na evropksý kontinent v letech 2006 a 2018. Toto časové období koresponduje s časovým obdobím cen v České republice v primání finální tabulce.
+
 ```
-### 3.2 Sekundární finální tabulka
+CREATE TABLE t_ondrej_zapletal_project_SQL_secondary_final AS
+	SELECT 
+		e.country,
+		e.`year`,
+		e.GDP,
+		c.population,
+		c.surface_area
+	FROM economies e 
+	JOIN countries c 
+		ON e.country = c.country
+	WHERE c.continent = 'Europe'
+		AND e.`year` BETWEEN 2006 AND 2018;
+```
+
 ## 4. Výzkumné otázky
