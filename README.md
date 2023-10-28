@@ -37,10 +37,6 @@
 		- [4.5 Má výška HDP vliv na změny ve mzdách a cenách potravin? Neboli, pokud HDP vzroste výrazněji v jednom roce, projeví se to na cenách potravin či mzdách ve stejném nebo následujícím roce výraznějším růstem?](#45-má-výška-hdp-vliv-na-změny-ve-mzdách-a-cenách-potravin-neboli-pokud-hdp-vzroste-výrazněji-v-jednom-roce-projeví-se-to-na-cenách-potravin-či-mzdách-ve-stejném-nebo-následujícím-roce-výraznějším-růstem)
   
 
-
-
-
-
 ## 1. Zadání projektu
 
 Na vašem analytickém oddělení nezávislé společnosti, která se zabývá životní úrovní občanů, jste se dohodli, že se pokusíte odpovědět na pár definovaných výzkumných otázek, které adresují dostupnost základních potravin široké veřejnosti. Kolegové již vydefinovali základní otázky, na které se pokusí odpovědět a poskytnout tuto informaci tiskovému oddělení. Toto oddělení bude výsledky prezentovat na následující konferenci zaměřené na tuto oblast.
@@ -183,7 +179,6 @@ SELECT
 FROM czechia_price 
 GROUP BY region_code;
 ```
-
 >Pokud v následojících datových analýzách nebude potřeba rozdělení na kraje tak je lepší využíta region_code s prázdnými hodnotami. Pokud bude potřeba výsledné hodnoty o cenách atd rozdělit podle krajů je lepší prázné hodnoty v region_code vyloučit
 4. Sledované období je v od roku 2006 do roku 2018.
 ```
