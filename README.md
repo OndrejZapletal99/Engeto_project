@@ -32,7 +32,6 @@
 			- [2.4.2 Sekundární tabulky](#242-sekundární-tabulky)
 	- [3. Tvorba primární finální a primární sekundární tabulky](#3-tvorba-primární-finální-a-primární-sekundární-tabulky)
 		- [3.1 Primární finální tabulka](#31-primární-finální-tabulka)
-	- [4. Výzkumné otázky](#4-výzkumné-otázky)
 
 
 
@@ -303,7 +302,7 @@ Finální primární tabulka obsahuje sloupce:
 	JOIN czechia_price_category cpc
 		ON cp.category_code = cpc.code;
 	```
-### 3.2 Sekundární finální 
+### 3.2 Sekundární finální tabulka 
 Finální primární tabulka obsahuje sloupce:
 - **county** - název dané země
 - **year** - rok 
@@ -329,3 +328,30 @@ CREATE TABLE t_ondrej_zapletal_project_SQL_secondary_final AS
 ```
 
 ## 4. Výzkumné otázky
+### 4.1 Rostou v průběhu let mzdy ve všech odvětvích, nebo v některých klesají?
+Pro získání odpovědi na tuto otázku byl vytvořen následující SQL script
+```
+WITH table_q1 AS (
+SELECT 
+	`year`,
+	industry_name,
+	AVG(payroll_value) AS year_payroll,
+	LAG(AVG(payroll_value),1) OVER (PARTITION BY industry_name ORDER BY `year`) AS previous_payroll,
+	CASE
+		WHEN LAG(AVG(payroll_value),1) OVER (PARTITION BY industry_name ORDER BY `year`) < AVG(payroll_value) THEN 'increase'
+		WHEN LAG(AVG(payroll_value),1) OVER (PARTITION BY industry_name ORDER BY `year`) = AVG(payroll_value) THEN 'no change'
+		ELSE 'decrease'
+	END	payroll_change
+FROM t_ondrej_zapletal_project_sql_primary_final tozpspf
+GROUP BY industry_name, `year`
+)
+SELECT 
+	*,
+	(year_payroll - previous_payroll) / previous_payroll * 100 AS `change(%)`
+FROM table_q1
+WHERE previous_payroll IS NOT NULL	
+	AND payroll_change = 'decrease'
+ORDER BY `year`; 
+```
+>Dle tabulky/dat získaných díky výše uvedenému scriptu lze říci, že existovala odvětví průmyslu České republiky, které zaznamelana meziroční pokles průměrných mezd. Převážně se jednalo o poklesy obodobí ekonomických krizí od roku 200á do roku 2O12/13.
+Výsledná data dostupná v CSV formátu v souboru [q1_export_data]().
