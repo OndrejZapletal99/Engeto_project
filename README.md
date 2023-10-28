@@ -380,5 +380,26 @@ GROUP BY food_name, `year`;
 Výsledná data dostupná v CSV formátu v souboru [q2_export_data](https://github.com/OndrejZapletal99/Engeto_project/blob/main/q2_export_data.csv).
 
 ### 4.3 Která kategorie potravin zdražuje nejpomaleji (je u ní nejnižší percentuální meziroční nárůst)?
+Pro získání odpovědi na tuto otázku byl vytvořen následující SQL script
+```
+WITH q3_table AS (
+	SELECT 
+	 `year`,
+	 ROUND(AVG(price_value), 2) AS avg_price,
+	 food_name, 
+	 ROUND(LAG(AVG(price_value),12) OVER (PARTITION BY food_name ORDER BY `year`), 2) AS previous_avg_price
+	FROM t_ondrej_zapletal_project_sql_primary_final
+	GROUP BY `year`, food_name
+)
+SELECT
+	*,
+	ROUND((avg_price - previous_avg_price) / previous_avg_price * 100, 2) AS `change(%)`
+FROM q3_table
+WHERE previous_avg_price IS NOT NULL
+	AND ROUND((avg_price - previous_avg_price) / previous_avg_price, 2) > 0
+ORDER BY ROUND((avg_price - previous_avg_price) / previous_avg_price, 2) ASC;
+```
+>>>**Dle tabulky/dat získaných díky výše uvedenému scriptu lze říci, že nejpomaleji zdražuje kategorie potravin " Banány žluté". Tento závěr vychází z porovnání průměrné ceny jednotlivých kategorií potravin v roce 2006 a v roce 2018**
+Výsledná data dostupná v CSV formátu v souboru [q3_export_data]().
 ### 4.4 Existuje rok, ve kterém byl meziroční nárůst cen potravin výrazně vyšší než růst mezd (větší než 10 %)?
 ### 4.5 Má výška HDP vliv na změny ve mzdách a cenách potravin? Neboli, pokud HDP vzroste výrazněji v jednom roce, projeví se to na cenách potravin či mzdách ve stejném nebo následujícím roce výraznějším růstem?
