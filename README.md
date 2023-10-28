@@ -400,6 +400,6 @@ WHERE previous_avg_price IS NOT NULL
 ORDER BY ROUND((avg_price - previous_avg_price) / previous_avg_price, 2) ASC;
 ```
 >>>**Dle tabulky/dat získaných díky výše uvedenému scriptu lze říci, že nejpomaleji zdražuje kategorie potravin " Banány žluté". Tento závěr vychází z porovnání průměrné ceny jednotlivých kategorií potravin v roce 2006 a v roce 2018**
-Výsledná data dostupná v CSV formátu v souboru [q3_export_data]().
+Výsledná data dostupná v CSV formátu v souboru [q3_export_data](https://github.com/OndrejZapletal99/Engeto_project/blob/main/q3_export_data.csv).
 ### 4.4 Existuje rok, ve kterém byl meziroční nárůst cen potravin výrazně vyšší než růst mezd (větší než 10 %)?
 ### 4.5 Má výška HDP vliv na změny ve mzdách a cenách potravin? Neboli, pokud HDP vzroste výrazněji v jednom roce, projeví se to na cenách potravin či mzdách ve stejném nebo následujícím roce výraznějším růstem?
