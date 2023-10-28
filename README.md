@@ -32,7 +32,8 @@
 			- [2.4.2 Sekundární tabulky](#242-sekundární-tabulky)
 	- [3. Tvorba primární finální a primární sekundární tabulky](#3-tvorba-primární-finální-a-primární-sekundární-tabulky)
 		- [3.1 Primární finální tabulka](#31-primární-finální-tabulka)
-
+		- [4.2 Kolik je možné si koupit litrů mléka a kilogramů chleba za první a poslední srovnatelné období v dostupných datech cen a mezd?](#42-kolik-je-možné-si-koupit-litrů-mléka-a-kilogramů-chleba-za-první-a-poslední-srovnatelné-období-v-dostupných-datech-cen-a-mezd)
+  
 
 
 
@@ -327,7 +328,7 @@ CREATE TABLE t_ondrej_zapletal_project_SQL_secondary_final AS
 		AND e.`year` BETWEEN 2006 AND 2018;
 ```
 
-## 4. Výzkumné otázky
+# 4. Výzkumné otázky
 ### 4.1 Rostou v průběhu let mzdy ve všech odvětvích, nebo v některých klesají?
 Pro získání odpovědi na tuto otázku byl vytvořen následující SQL script
 ```
@@ -355,3 +356,5 @@ ORDER BY `year`;
 ```
 >Dle tabulky/dat získaných díky výše uvedenému scriptu lze říci, že existovala odvětví průmyslu České republiky, které zaznamelana meziroční pokles průměrných mezd. Převážně se jednalo o poklesy obodobí ekonomických krizí od roku 200á do roku 2O12/13.
 Výsledná data dostupná v CSV formátu v souboru [q1_export_data](https://github.com/OndrejZapletal99/Engeto_project/blob/main/q1_export_data.csv).
+### 4.2 Kolik je možné si koupit litrů mléka a kilogramů chleba za první a poslední srovnatelné období v dostupných datech cen a mezd?
+
