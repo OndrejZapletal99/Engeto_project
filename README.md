@@ -36,7 +36,6 @@
 		- [4.4 Existuje rok, ve kterém byl meziroční nárůst cen potravin výrazně vyšší než růst mezd (větší než 10 %)?](#44-existuje-rok-ve-kterém-byl-meziroční-nárůst-cen-potravin-výrazně-vyšší-než-růst-mezd-větší-než-10)
 		- [4.5 Má výška HDP vliv na změny ve mzdách a cenách potravin? Neboli, pokud HDP vzroste výrazněji v jednom roce, projeví se to na cenách potravin či mzdách ve stejném nebo následujícím roce výraznějším růstem?](#45-má-výška-hdp-vliv-na-změny-ve-mzdách-a-cenách-potravin-neboli-pokud-hdp-vzroste-výrazněji-v-jednom-roce-projeví-se-to-na-cenách-potravin-či-mzdách-ve-stejném-nebo-následujícím-roce-výraznějším-růstem)
   
-
 ## 1. Zadání projektu
 
 Na vašem analytickém oddělení nezávislé společnosti, která se zabývá životní úrovní občanů, jste se dohodli, že se pokusíte odpovědět na pár definovaných výzkumných otázek, které adresují dostupnost základních potravin široké veřejnosti. Kolegové již vydefinovali základní otázky, na které se pokusí odpovědět a poskytnout tuto informaci tiskovému oddělení. Toto oddělení bude výsledky prezentovat na následující konferenci zaměřené na tuto oblast.
@@ -396,6 +395,7 @@ ORDER BY ROUND((avg_price - previous_avg_price) / previous_avg_price, 2) ASC;
 ```
 >>>**Dle tabulky/dat získaných díky výše uvedenému scriptu lze říci, že nejpomaleji zdražuje kategorie potravin " Banány žluté". Tento závěr vychází z porovnání průměrné ceny jednotlivých kategorií potravin v roce 2006 a v roce 2018**
 Výsledná data dostupná v CSV formátu v souboru [q3_export_data](https://github.com/OndrejZapletal99/Engeto_project/blob/main/q3_export_data.csv).
+
 ### 4.4 Existuje rok, ve kterém byl meziroční nárůst cen potravin výrazně vyšší než růst mezd (větší než 10 %)?
 Pro získání odpovědi na tuto otázku byly vytvořeny dva scripty.
 1. První script za využití funkce LAG:
@@ -437,4 +437,5 @@ ORDER BY ROUND((t1.avg_price - t2.avg_price) / t2.avg_price * 100, 2) DESC;
 ```
 >>>**Pomocí prvního scriptu byla výsledkem prázdná tabulka, tudíž neexistuje rok, ve kterém by byl meziroční nárůst cen vyšší než 10 %.Pomocí druhého scriptu byla výsledkem tabulka v níž byly zachyceny meziroční nárůsty cen a a nejvyšší meziroční nárůst cen byl 9,98 %. Zde také neexistuje rok, ve kterém by byl meziroční nárůst cen vyšší než 10 %.**
 Výsledná data dostupná v CSV formátu v souboru [q4_export_data](https://github.com/OndrejZapletal99/Engeto_project/blob/main/q4_export_data.csv).
+
 ### 4.5 Má výška HDP vliv na změny ve mzdách a cenách potravin? Neboli, pokud HDP vzroste výrazněji v jednom roce, projeví se to na cenách potravin či mzdách ve stejném nebo následujícím roce výraznějším růstem?
