@@ -259,15 +259,54 @@ FROM economies;
 1. Pro czechia_payroll_calculation  bude použito omezení/filtr pouze na hodnotu "**200**" ze sloupce code aby hodnoty vyjadřovavané hodnoty byly přepočtené na celé úvazky.
 2. Pro czechia_payroll_unit  bude použito omezení/filtr pouze na hodnotu "**200**" ze sloupce code aby hodnoty byly vyjádřeny v Kč.
 3. Pro czechia_payroll_value_type  bude použito omezení/filtr pouze na hodnotu "**5958**" ze sloupce code aby hodnoty vyjadřovaly průměrnou hrubou mzdu zaměstnance.
-4. Sloupec payroll_year z tabulky czechia_payroll obsahuje časové období od roku 200O do 20021
+4. Sloupec payroll_year z tabulky czechia_payroll obsahuje časové období od roku 2000 do 2021
 5. Sloupec date_from z tabulky czechia_price obsauje časové období od roku 2006 a 2018
 6. Sloupec 'payroll_year' z tabulky czechia_payroll a sloupec 'date_from' z tabulky czechia_price bude spojovacím sloupcem pro spojení těchto dvou tabulek.
-7. Ze sloupce region_code z tabulky czechia_price budou odebrány takové záznamy, které obsahují prázdné hodnoty.
+7. Sloupec region_code z tabulky czechia_price obsahuje prázdné hodnoty. Tyto prázdné hodnoty znamenají celkový průměr za všechny kraje.
 8. Sloupec industry_branch_code z tabulky czechia_payroll obsahuje prázdné hodnoty.
  #### 2.4.2 Sekundární tabulky
  1. V projektu budou spíše využita data z tabulky economies, které budou doplněny o data z tabulky country v nové vzniklé finální sekundární tabulce.
  2. Spojovacím sloupcem bude 'country' v obou tabulkách
 ## 3. Tvorba primární finální a primární sekundární tabulky
 ### 3.1 Primární finální tabulka
+	Konečná finální primární tabulka obsahuje sloupce:
+	- **price_value** - průměrná cena dané kategorie potravin za všechny kraje
+	- **food_name_code** - kod kategorie potravin
+	- **food_name** - název kategorie potravin
+	- **food_unit_value** - hodnota, ne kterou je vztažena jednotka dané potraviny
+	- **food_unit** - jednotka dané potraviny
+	- **payroll_value** - průěmrná hrubá mzda v Kč vztažená na celý úvazek
+	- **industry_code** - kod kategorie průmyslu České republiky
+	- **industry_name** - název kategorie průmyslu České republiky
+	- **rok** - časové období měření
+  ```
+  CREATE TABLE t_ondrej_zapletal_project_SQL_primary_final AS
+	SELECT 
+		cp.value AS price_value,
+		cp.category_code AS food_name_code,
+		cpc.name AS food_name,
+		cpc.price_value AS food_unit_value,
+		cpc.price_unit AS food_unit,
+		cp2.value AS payroll_value,
+		cp2.industry_branch_code AS industry_code,
+		cpib.name AS industry_name,
+		cp2.payroll_year AS `year`
+	FROM czechia_price cp 
+	JOIN czechia_payroll cp2 
+		ON YEAR(cp.date_from) = cp2.payroll_year
+		AND cp2.unit_code = 200
+		AND cp2.value_type_code = 5958
+		AND cp2.calculation_code = 200
+		AND cp.region_code IS NULL
+		AND cp2.industry_branch_code IS NOT NULL
+	JOIN czechia_payroll_industry_branch cpib
+		ON cp2.industry_branch_code = cpib.code 
+	JOIN czechia_price_category cpc
+		ON cp.category_code = cpc.code;
+	
+SELECT DISTINCT
+	*
+FROM t_ondrej_zapletal_project_sql_primary_final tozpspf; 
+```
 ### 3.2 Sekundární finální tabulka
 ## 4. Výzkumné otázky
