@@ -323,7 +323,6 @@ CREATE TABLE t_ondrej_zapletal_project_SQL_secondary_final AS
 	WHERE c.continent = 'Europe'
 		AND e.`year` BETWEEN 2006 AND 2018;
 ```
-
 ## 4. Výzkumné otázky
 ### 4.1 Rostou v průběhu let mzdy ve všech odvětvích, nebo v některých klesají?
 
@@ -354,7 +353,6 @@ ORDER BY `year`;
 >>>**Dle tabulky/dat získaných díky výše uvedenému scriptu lze říci, že existovala odvětví průmyslu České republiky, které zaznamelana meziroční pokles průměrných mezd. Převážně se jednalo o poklesy obodobí ekonomických krizí od roku 2006 do roku 2O12/13.**
 
 Výsledná data dostupná v CSV formátu v souboru [q1_export_data](https://github.com/OndrejZapletal99/Engeto_project/blob/main/q1_export_data.csv).
-
 ### 4.2 Kolik je možné si koupit litrů mléka a kilogramů chleba za první a poslední srovnatelné období v dostupných datech cen a mezd?
 Pro získání odpovědi na tuto otázku byl vytvořen následující SQL script.
 ```
@@ -372,7 +370,6 @@ GROUP BY food_name, `year`;
 ```
 >>>**Dle tabulky/dat získaných díky výše uvedenému scriptu lze říci, že v roce 2008 si lidé mohli z průměrné hrubé mzdy zakoupit 1219,9 kg chleba a 1469,8 l mléka. V roce 2018 si lidé mohli zakoupit 1336,49 kg chleba a 1628,52 l mléka.**
 Výsledná data dostupná v CSV formátu v souboru [q2_export_data](https://github.com/OndrejZapletal99/Engeto_project/blob/main/q2_export_data.csv).
-
 ### 4.3 Která kategorie potravin zdražuje nejpomaleji (je u ní nejnižší percentuální meziroční nárůst)?
 Pro získání odpovědi na tuto otázku byl vytvořen následující SQL script.
 ```
@@ -395,7 +392,6 @@ ORDER BY ROUND((avg_price - previous_avg_price) / previous_avg_price, 2) ASC;
 ```
 >>>**Dle tabulky/dat získaných díky výše uvedenému scriptu lze říci, že nejpomaleji zdražuje kategorie potravin " Banány žluté". Tento závěr vychází z porovnání průměrné ceny jednotlivých kategorií potravin v roce 2006 a v roce 2018**
 Výsledná data dostupná v CSV formátu v souboru [q3_export_data](https://github.com/OndrejZapletal99/Engeto_project/blob/main/q3_export_data.csv).
-
 ### 4.4 Existuje rok, ve kterém byl meziroční nárůst cen potravin výrazně vyšší než růst mezd (větší než 10 %)?
 Pro získání odpovědi na tuto otázku byly vytvořeny dva scripty.
 1. První script za využití funkce LAG:
@@ -437,5 +433,4 @@ ORDER BY ROUND((t1.avg_price - t2.avg_price) / t2.avg_price * 100, 2) DESC;
 ```
 >>>**Pomocí prvního scriptu byla výsledkem prázdná tabulka, tudíž neexistuje rok, ve kterém by byl meziroční nárůst cen vyšší než 10 %.Pomocí druhého scriptu byla výsledkem tabulka v níž byly zachyceny meziroční nárůsty cen a a nejvyšší meziroční nárůst cen byl 9,98 %. Zde také neexistuje rok, ve kterém by byl meziroční nárůst cen vyšší než 10 %.**
 Výsledná data dostupná v CSV formátu v souboru [q4_export_data](https://github.com/OndrejZapletal99/Engeto_project/blob/main/q4_export_data.csv).
-
 ### 4.5 Má výška HDP vliv na změny ve mzdách a cenách potravin? Neboli, pokud HDP vzroste výrazněji v jednom roce, projeví se to na cenách potravin či mzdách ve stejném nebo následujícím roce výraznějším růstem?
