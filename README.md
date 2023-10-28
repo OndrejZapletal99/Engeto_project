@@ -32,7 +32,7 @@
 			- [2.4.2 Sekundární tabulky](#242-sekundární-tabulky)
 	- [3. Tvorba primární finální a primární sekundární tabulky](#3-tvorba-primární-finální-a-primární-sekundární-tabulky)
 		- [3.1 Primární finální tabulka](#31-primární-finální-tabulka)
-		- [4.2 Kolik je možné si koupit litrů mléka a kilogramů chleba za první a poslední srovnatelné období v dostupných datech cen a mezd?](#42-kolik-je-možné-si-koupit-litrů-mléka-a-kilogramů-chleba-za-první-a-poslední-srovnatelné-období-v-dostupných-datech-cen-a-mezd)
+		- [4.3 Která kategorie potravin zdražuje nejpomaleji (je u ní nejnižší percentuální meziroční nárůst)?](#43-která-kategorie-potravin-zdražuje-nejpomaleji-je-u-ní-nejnižší-percentuální-meziroční-nárůst)
   
 
 
@@ -354,7 +354,23 @@ WHERE previous_payroll IS NOT NULL
 	AND payroll_change = 'decrease'
 ORDER BY `year`; 
 ```
->Dle tabulky/dat získaných díky výše uvedenému scriptu lze říci, že existovala odvětví průmyslu České republiky, které zaznamelana meziroční pokles průměrných mezd. Převážně se jednalo o poklesy obodobí ekonomických krizí od roku 2006 do roku 2O12/13.
+>>>**Dle tabulky/dat získaných díky výše uvedenému scriptu lze říci, že existovala odvětví průmyslu České republiky, které zaznamelana meziroční pokles průměrných mezd. Převážně se jednalo o poklesy obodobí ekonomických krizí od roku 2006 do roku 2O12/13.**
 Výsledná data dostupná v CSV formátu v souboru [q1_export_data](https://github.com/OndrejZapletal99/Engeto_project/blob/main/q1_export_data.csv).
 ### 4.2 Kolik je možné si koupit litrů mléka a kilogramů chleba za první a poslední srovnatelné období v dostupných datech cen a mezd?
-
+Pro získání odpovědi na tuto otázku byl vytvořen následující SQL script
+```
+SELECT
+	`year`, 
+	food_name,
+	ROUND(AVG (payroll_value) / price_value, 2) AS food_amount,
+	food_unit_value,
+	food_unit 
+FROM t_ondrej_zapletal_project_sql_primary_final
+WHERE (LOWER(food_name) LIKE '%chléb%'
+	OR LOWER(food_name) LIKE '%mléko%')
+	AND `year` IN (2006, 2018)
+GROUP BY food_name, `year`;	
+```
+>>>**Dle tabulky/dat získaných díky výše uvedenému scriptu lze říci, že v roce 2008 si lidé mohli z průměrné hrubé mzdy zakoupit 1219,9 kg chleba a 1469,8 l mléka. V roce 2018 si lidé mohli zakoupit 1336,49 kg chleba a 1628,52 l mléka.**
+Výsledná data dostupná v CSV formátu v souboru [q2_export_data]().
+### 4.3 Která kategorie potravin zdražuje nejpomaleji (je u ní nejnižší percentuální meziroční nárůst)?
