@@ -333,7 +333,7 @@ CREATE TABLE t_ondrej_zapletal_project_SQL_secondary_final AS
 ## 4. Výzkumné otázky
 ### 4.1 Rostou v průběhu let mzdy ve všech odvětvích, nebo v některých klesají?
 
-Pro získání odpovědi na tuto otázku byl vytvořen následující SQL script
+Pro získání odpovědi na tuto otázku byl vytvořen následující SQL script.
 ```
 WITH table_q1 AS (
 SELECT 
@@ -362,7 +362,7 @@ ORDER BY `year`;
 Výsledná data dostupná v CSV formátu v souboru [q1_export_data](https://github.com/OndrejZapletal99/Engeto_project/blob/main/q1_export_data.csv).
 
 ### 4.2 Kolik je možné si koupit litrů mléka a kilogramů chleba za první a poslední srovnatelné období v dostupných datech cen a mezd?
-Pro získání odpovědi na tuto otázku byl vytvořen následující SQL script
+Pro získání odpovědi na tuto otázku byl vytvořen následující SQL script.
 ```
 SELECT
 	`year`, 
@@ -380,7 +380,7 @@ GROUP BY food_name, `year`;
 Výsledná data dostupná v CSV formátu v souboru [q2_export_data](https://github.com/OndrejZapletal99/Engeto_project/blob/main/q2_export_data.csv).
 
 ### 4.3 Která kategorie potravin zdražuje nejpomaleji (je u ní nejnižší percentuální meziroční nárůst)?
-Pro získání odpovědi na tuto otázku byl vytvořen následující SQL script
+Pro získání odpovědi na tuto otázku byl vytvořen následující SQL script.
 ```
 WITH q3_table AS (
 	SELECT 
@@ -402,4 +402,44 @@ ORDER BY ROUND((avg_price - previous_avg_price) / previous_avg_price, 2) ASC;
 >>>**Dle tabulky/dat získaných díky výše uvedenému scriptu lze říci, že nejpomaleji zdražuje kategorie potravin " Banány žluté". Tento závěr vychází z porovnání průměrné ceny jednotlivých kategorií potravin v roce 2006 a v roce 2018**
 Výsledná data dostupná v CSV formátu v souboru [q3_export_data](https://github.com/OndrejZapletal99/Engeto_project/blob/main/q3_export_data.csv).
 ### 4.4 Existuje rok, ve kterém byl meziroční nárůst cen potravin výrazně vyšší než růst mezd (větší než 10 %)?
+Pro získání odpovědi na tuto otázku byly vytvořeny dva scripty.
+1. První script za využití funkce LAG:
+ ```
+WITH q3_table AS (
+	SELECT 
+	 `year`,
+	 ROUND(AVG(price_value), 2) AS avg_price,
+	 ROUND(LAG(AVG(price_value),1) OVER (ORDER BY `year`), 2) AS previous_avg_price
+	FROM t_ondrej_zapletal_project_sql_primary_final
+	GROUP BY `year`
+)
+SELECT
+	*,
+	ROUND((avg_price - previous_avg_price) / previous_avg_price * 100, 2) AS `change(%)`
+FROM q3_table
+WHERE previous_avg_price IS NOT NULL
+	AND ROUND((avg_price - previous_avg_price) / previous_avg_price, 2) > 10;
+```
+2. Druhý scripit bez využití funkce LAG:
+ ```
+WITH q3_table AS (
+	SELECT
+		`year`, 
+		AVG(price_value) AS avg_price
+	FROM t_ondrej_zapletal_project_sql_primary_final
+	GROUP BY `year`
+)
+SELECT 
+	ROUND(t1.avg_price, 2) AS avg_price,
+	ROUND(t2.avg_price, 2) AS avg_price_previous,
+	t1.`year`,
+	t2.`year`,
+	ROUND((t1.avg_price - t2.avg_price) / t2.avg_price * 100, 2) AS `change(%)`
+FROM q3_table t1
+ JOIN q3_table t2
+ 	ON t1.`year` = t2.`year` + 1
+ORDER BY ROUND((t1.avg_price - t2.avg_price) / t2.avg_price * 100, 2) DESC;	
+```
+>>>**Pomocí prvního scriptu byla výsledkem prázdná tabulka, tudíž neexistuje rok, ve kterém by byl meziroční nárůst cen vyšší než 10 %.Pomocí druhého scriptu byla výsledkem tabulka v níž byly zachyceny meziroční nárůsty cen a a nejvyšší meziroční nárůst cen byl 9,98 %. Zde také neexistuje rok, ve kterém by byl meziroční nárůst cen vyšší než 10 %.**
+Výsledná data dostupná v CSV formátu v souboru [q4_export_data]().
 ### 4.5 Má výška HDP vliv na změny ve mzdách a cenách potravin? Neboli, pokud HDP vzroste výrazněji v jednom roce, projeví se to na cenách potravin či mzdách ve stejném nebo následujícím roce výraznějším růstem?
