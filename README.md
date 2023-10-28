@@ -259,8 +259,11 @@ FROM economies;
 1. Pro czechia_payroll_calculation  bude použito omezení/filtr pouze na hodnotu "**200**" ze sloupce code aby hodnoty vyjadřovavané hodnoty byly přepočtené na celé úvazky.
 2. Pro czechia_payroll_unit  bude použito omezení/filtr pouze na hodnotu "**200**" ze sloupce code aby hodnoty byly vyjádřeny v Kč.
 3. Pro czechia_payroll_value_type  bude použito omezení/filtr pouze na hodnotu "**5958**" ze sloupce code aby hodnoty vyjadřovaly průměrnou hrubou mzdu zaměstnance.
-4. Sloupec 'payroll_year' z tabulky czechia_payroll a sloupec 'date_from' z tabulky czechia_price bude spojovacím sloupcem pro spojení těchto dvou tabulek.
-5. Ze sloupce region_code z tabulky czechia_price budou odebrány takové záznamy, které obsahují prázdné hodnoty.
+4. Sloupec payroll_year z tabulky czechia_payroll obsahuje časové období od roku 200O do 20021
+5. Sloupec date_from z tabulky czechia_price obsauje časové období od roku 2006 a 2018
+6. Sloupec 'payroll_year' z tabulky czechia_payroll a sloupec 'date_from' z tabulky czechia_price bude spojovacím sloupcem pro spojení těchto dvou tabulek.
+7. Ze sloupce region_code z tabulky czechia_price budou odebrány takové záznamy, které obsahují prázdné hodnoty.
+8. Sloupec industry_branch_code z tabulky czechia_payroll obsahuje prázdné hodnoty.
  #### 2.4.2 Sekundární tabulky
  1. V projektu budou spíše využita data z tabulky economies, které budou doplněny o data z tabulky country v nové vzniklé finální sekundární tabulce.
  2. Spojovacím sloupcem bude 'country' v obou tabulkách
