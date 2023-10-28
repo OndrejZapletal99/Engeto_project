@@ -6,10 +6,7 @@
 ---
 
 
-# Obsah
-  
-- [Engeto projekt](#engeto-projekt)
-- [Obsah](#obsah)
+- ## Obsah
 	- [1. Zadání projektu](#1-zadání-projektu)
 		- [1.1 Výzkumné otázky](#11-výzkumné-otázky)
 	- [2. Analýza jednotlivých tabulek](#2-analýza-jednotlivých-tabulek)
@@ -32,7 +29,12 @@
 			- [2.4.2 Sekundární tabulky](#242-sekundární-tabulky)
 	- [3. Tvorba primární finální a primární sekundární tabulky](#3-tvorba-primární-finální-a-primární-sekundární-tabulky)
 		- [3.1 Primární finální tabulka](#31-primární-finální-tabulka)
+	- [4. Výzkumné otázky](#4-výzkumné-otázky)
+    	- [4.1 Rostou v průběhu let mzdy ve všech odvětvích, nebo v některých klesají?)?](#41-rostou-v-průběhu-let-mzdy-ve-všech-odvětvích-nebo-v-některých-klesají)
+    	- [4.2 Kolik je možné si koupit litrů mléka a kilogramů chleba za první a poslední srovnatelné období v dostupných datech cen a mezd?)?](#42-kolik-je-možné-si-koupit-litrů-mléka-a-kilogramů-chleba-za-první-a-poslední-srovnatelné-období-v-dostupných-datech-cen-a-mezd)
 		- [4.3 Která kategorie potravin zdražuje nejpomaleji (je u ní nejnižší percentuální meziroční nárůst)?](#43-která-kategorie-potravin-zdražuje-nejpomaleji-je-u-ní-nejnižší-percentuální-meziroční-nárůst)
+		- [4.4 Existuje rok, ve kterém byl meziroční nárůst cen potravin výrazně vyšší než růst mezd (větší než 10 %)?](#44-existuje-rok-ve-kterém-byl-meziroční-nárůst-cen-potravin-výrazně-vyšší-než-růst-mezd-větší-než-10)
+		- [Má výška HDP vliv na změny ve mzdách a cenách potravin? Neboli, pokud HDP vzroste výrazněji v jednom roce, projeví se to na cenách potravin či mzdách ve stejném nebo následujícím roce výraznějším růstem?](#45-má-výška-hdp-vliv-na-změny-ve-mzdách-a-cenách-potravin-neboli-pokud-hdp-vzroste-výrazněji-v-jednom-roce-projeví-se-to-na-cenách-potravin-či-mzdách-ve-stejném-nebo-následujícím-roce-výraznějším-růstem)
   
 
 
@@ -328,8 +330,9 @@ CREATE TABLE t_ondrej_zapletal_project_SQL_secondary_final AS
 		AND e.`year` BETWEEN 2006 AND 2018;
 ```
 
-# 4. Výzkumné otázky
+## 4. Výzkumné otázky
 ### 4.1 Rostou v průběhu let mzdy ve všech odvětvích, nebo v některých klesají?
+
 Pro získání odpovědi na tuto otázku byl vytvořen následující SQL script
 ```
 WITH table_q1 AS (
@@ -355,7 +358,9 @@ WHERE previous_payroll IS NOT NULL
 ORDER BY `year`; 
 ```
 >>>**Dle tabulky/dat získaných díky výše uvedenému scriptu lze říci, že existovala odvětví průmyslu České republiky, které zaznamelana meziroční pokles průměrných mezd. Převážně se jednalo o poklesy obodobí ekonomických krizí od roku 2006 do roku 2O12/13.**
+
 Výsledná data dostupná v CSV formátu v souboru [q1_export_data](https://github.com/OndrejZapletal99/Engeto_project/blob/main/q1_export_data.csv).
+
 ### 4.2 Kolik je možné si koupit litrů mléka a kilogramů chleba za první a poslední srovnatelné období v dostupných datech cen a mezd?
 Pro získání odpovědi na tuto otázku byl vytvořen následující SQL script
 ```
@@ -373,4 +378,7 @@ GROUP BY food_name, `year`;
 ```
 >>>**Dle tabulky/dat získaných díky výše uvedenému scriptu lze říci, že v roce 2008 si lidé mohli z průměrné hrubé mzdy zakoupit 1219,9 kg chleba a 1469,8 l mléka. V roce 2018 si lidé mohli zakoupit 1336,49 kg chleba a 1628,52 l mléka.**
 Výsledná data dostupná v CSV formátu v souboru [q2_export_data](https://github.com/OndrejZapletal99/Engeto_project/blob/main/q2_export_data.csv).
+
 ### 4.3 Která kategorie potravin zdražuje nejpomaleji (je u ní nejnižší percentuální meziroční nárůst)?
+### 4.4 Existuje rok, ve kterém byl meziroční nárůst cen potravin výrazně vyšší než růst mezd (větší než 10 %)?
+### 4.5 Má výška HDP vliv na změny ve mzdách a cenách potravin? Neboli, pokud HDP vzroste výrazněji v jednom roce, projeví se to na cenách potravin či mzdách ve stejném nebo následujícím roce výraznějším růstem?
