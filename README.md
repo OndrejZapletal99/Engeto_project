@@ -463,4 +463,4 @@ SELECT
 FROM q5_table;
 ```
 >>>**Z dat získaných z výše uvedeného scriptu nelze jednoznačně potvrdit hypotézu, že při výrazném růstu/poklesu HDP v jednom roce vztostou/poklesnou mzdy nebo ceny v roce stejném nebo následujícím.**
-Výsledná data dostupná v CSV formátu v souboru [q5_export_data]().
+Výsledná data dostupná v CSV formátu v souboru [q5_export_data](https://github.com/OndrejZapletal99/Engeto_project/blob/main/q5_export_data.csv).
