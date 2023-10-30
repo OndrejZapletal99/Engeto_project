@@ -434,3 +434,33 @@ ORDER BY ROUND((t1.avg_price - t2.avg_price) / t2.avg_price * 100, 2) DESC;
 >>>**Pomocí prvního scriptu byla výsledkem prázdná tabulka, tudíž neexistuje rok, ve kterém by byl meziroční nárůst cen vyšší než 10 %.Pomocí druhého scriptu byla výsledkem tabulka v níž byly zachyceny meziroční nárůsty cen a a nejvyšší meziroční nárůst cen byl 9,98 %. Zde také neexistuje rok, ve kterém by byl meziroční nárůst cen vyšší než 10 %.**
 Výsledná data dostupná v CSV formátu v souboru [q4_export_data](https://github.com/OndrejZapletal99/Engeto_project/blob/main/q4_export_data.csv).
 ### 4.5 Má výška HDP vliv na změny ve mzdách a cenách potravin? Neboli, pokud HDP vzroste výrazněji v jednom roce, projeví se to na cenách potravin či mzdách ve stejném nebo následujícím roce výraznějším růstem?
+Pro získání odpovědi na tuto otázku byl vytvořen následující SQL script.
+ ```
+WITH q5_table AS (
+SELECT 
+	s.GDP AS gdp,
+	LAG(s.GDP, 1)  OVER (ORDER BY p.`year`) AS avg_previous_gdp,
+	AVG(p.price_value) AS avg_price,
+	AVG(p.payroll_value) AS avg_payroll,
+	p.`year` AS actual_year,
+	LAG(AVG(p.price_value), 1)  OVER (ORDER BY p.`year`) AS avg_previous_price,
+	LAG(AVG(p.payroll_value), 1)  OVER (ORDER BY p.`year`) AS avg_previous_payroll,
+	LAG(AVG(p.price_value), 2)  OVER (ORDER BY p.`year`) AS avg_2_previous_price,
+	LAG(AVG(p.payroll_value), 2)  OVER (ORDER BY p.`year`) AS avg_2_previous_payroll
+FROM t_ondrej_zapletal_project_sql_primary_final p
+JOIN t_ondrej_zapletal_project_sql_secondary_final s 
+	ON p.`year` = s.`year`
+WHERE s.country = 'Czech republic'
+GROUP BY p.`year`
+)
+SELECT 
+	actual_year,
+	ROUND((gdp - avg_previous_gdp) / avg_previous_gdp * 100, 2) AS `gdp_change(%)`,
+	ROUND((avg_price - avg_previous_price) / avg_previous_price * 100, 2) AS `avg_price_change_one_year(%)`,
+	ROUND((avg_payroll - avg_previous_payroll) / avg_previous_payroll * 100, 2) AS `avg_payroll_change_one_year(%)`,
+	ROUND((avg_price - avg_2_previous_price) / avg_2_previous_price * 100, 2) AS `avg_price_change_two_years(%)`,
+	ROUND((avg_payroll - avg_2_previous_payroll) / avg_2_previous_payroll * 100, 2) AS `avg_payroll_change_two_years(%)`
+FROM q5_table;
+```
+>>>**Z dat získaných z výše uvedeného scriptu nelze jednoznačně potvrdit hypotézu, že při výrazném růstu/poklesu HDP v jednom roce vztostou/poklesnou mzdy nebo ceny v roce stejném nebo následujícím.**
+Výsledná data dostupná v CSV formátu v souboru [q5_export_data]().
