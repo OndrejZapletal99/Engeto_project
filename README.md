@@ -371,7 +371,8 @@ GROUP BY food_name, `year`;
 >>>**Dle tabulky/dat získaných díky výše uvedenému scriptu lze říci, že v roce 2008 si lidé mohli z průměrné hrubé mzdy zakoupit 1219,9 kg chleba a 1469,8 l mléka. V roce 2018 si lidé mohli zakoupit 1336,49 kg chleba a 1628,52 l mléka.**
 Výsledná data dostupná v CSV formátu v souboru [q2_export_data](https://github.com/OndrejZapletal99/Engeto_project/blob/main/q2_export_data.csv).
 ### 4.3 Která kategorie potravin zdražuje nejpomaleji (je u ní nejnižší percentuální meziroční nárůst)?
-Pro získání odpovědi na tuto otázku byl vytvořen následující SQL script.
+Pro získání odpovědi na tuto otázku byly vytvořeny dva scripty.
+1. První script za využití funkce LAG:
 ```
 WITH q3_table AS (
 	SELECT 
@@ -383,14 +384,37 @@ WITH q3_table AS (
 	GROUP BY `year`, food_name
 )
 SELECT
-	*,
+	food_name,
 	ROUND((avg_price - previous_avg_price) / previous_avg_price * 100, 2) AS `change(%)`
 FROM q3_table
 WHERE previous_avg_price IS NOT NULL
-	AND ROUND((avg_price - previous_avg_price) / previous_avg_price, 2) > 0
 ORDER BY ROUND((avg_price - previous_avg_price) / previous_avg_price, 2) ASC;
 ```
->>>**Dle tabulky/dat získaných díky výše uvedenému scriptu lze říci, že nejpomaleji zdražuje kategorie potravin " Banány žluté". Tento závěr vychází z porovnání průměrné ceny jednotlivých kategorií potravin v roce 2006 a v roce 2018**
+2. Druhý scripit bez využití funkce LAG:
+```
+WITH q3_table AS (
+	SELECT
+		`year`,
+		food_name,
+		AVG(price_value) AS avg_price
+	FROM t_ondrej_zapletal_project_sql_primary_final
+	WHERE `year` IN (2006, 2018)
+	GROUP BY YEAR, food_name
+)
+SELECT 
+	t1.food_name,
+	ROUND(t1.avg_price,2) AS avg_price,
+	ROUND(t2.avg_price,2) AS avg_price_previous,
+	t1.`year`,
+	t2.`year` AS previous_year,
+	ROUND((t1.avg_price - t2.avg_price) / t2.avg_price * 100, 2) AS `change(%)`
+FROM q3_table  t1
+	JOIN q3_table t2 ON
+	t1.`year` = t2.`year` + 12
+	AND t1.food_name = t2.food_name
+	ORDER BY ROUND((t1.avg_price - t2.avg_price) / t2.avg_price * 100, 2);
+```
+>>>**Dle tabulky/dat získaných díky výše uvedenému scriptu lze říci, že nejpomaleji zdražuje kategorie potravin " Cukr krystalový". Tento závěr vychází z porovnání průměrné ceny jednotlivých kategorií potravin v roce 2006 a v roce 2018**
 Výsledná data dostupná v CSV formátu v souboru [q3_export_data](https://github.com/OndrejZapletal99/Engeto_project/blob/main/q3_export_data.csv).
 ### 4.4 Existuje rok, ve kterém byl meziroční nárůst cen potravin výrazně vyšší než růst mezd (větší než 10 %)?
 Pro získání odpovědi na tuto otázku byly vytvořeny dva scripty.
@@ -411,7 +435,7 @@ FROM q4_table
 WHERE previous_avg_price IS NOT NULL
 	AND ROUND((avg_price - previous_avg_price) / previous_avg_price, 2) > 10;
 ```
-2. Druhý scripit bez využití funkce LAG:
+1. Druhý scripit bez využití funkce LAG:
  ```
 WITH q4_table AS (
 	SELECT
